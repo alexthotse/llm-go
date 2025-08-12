@@ -120,21 +120,57 @@ Logging will be implemented using a SQLite database, similar to the Python versi
 
 ### 4.1. Project Scaffolding
 
+**Status: DONE**
+
 *   Initialize a new Go module: `go mod init github.com/user/llm-go`
 *   Create the initial directory structure.
 *   Set up a basic `main.go` file with a `cobra` root command.
 
 ### 4.2. Model Abstraction
 
+**Status: DONE**
+
 *   Define the `Model`, `EmbeddingModel`, `Prompt`, and `Options` interfaces and structs in the `pkg/llm` package.
 
 ### 4.3. OpenAI Integration
+
+**Status: IN PROGRESS**
 
 *   Create a new `pkg/provider/openai` package.
 *   Implement an `OpenAIModel` struct that implements the `llm.Model` interface.
 *   Use the official OpenAI Go client library for interacting with the API.
 
+#### 4.3.1. `OpenAIModel` Struct
+
+The `OpenAIModel` struct will have the following fields:
+
+```go
+package openai
+
+import (
+    "github.com/sashabaranov/go-openai"
+)
+
+type OpenAIModel struct {
+    name   string
+    client *openai.Client
+}
+```
+
+#### 4.3.2. `Execute` Method
+
+The `Execute` method will be responsible for the following:
+1.  Creating a chat completion request from the `llm.Prompt`.
+2.  Calling the OpenAI API.
+3.  Parsing the response and returning an `llm.Response`.
+
+#### 4.3.3. API Key Management
+
+The OpenAI API key will be read from the `OPENAI_API_KEY` environment variable. In a later step, we will implement a more robust key management system.
+
 ### 4.4. Key Management
+
+**Status: NOT STARTED**
 
 *   Create a `pkg/store` package.
 *   Implement a `KeyStore` struct for managing API keys.
@@ -142,13 +178,17 @@ Logging will be implemented using a SQLite database, similar to the Python versi
 
 ### 4.5. Logging
 
+**Status: NOT STARTED**
+
 *   Implement a `LogStore` struct in the `pkg/store` package.
 *   Use `gorm` to create and manage a SQLite database at `~/.llm/logs.db`.
 *   Define a `LogEntry` struct for storing prompts and responses.
 
 ### 4.6. Basic CLI Commands
 
-*   Implement the `prompt` command in `cmd/llm/prompt.go`.
+**Status: IN PROGRESS**
+
+*   Implement the `prompt` command in `cmd/llm/prompt.go`. **DONE**
 *   Implement the `chat` command in `cmd/llm/chat.go`.
 *   Implement the `keys` command in `cmd/llm/keys.go`.
 *   Implement the `logs` command in `cmd/llm/logs.go`.

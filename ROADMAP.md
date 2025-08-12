@@ -2,24 +2,45 @@
 
 This document outlines the high-level roadmap for rewriting the `llm` Python library and CLI in Go. The rewrite will be conducted in several phases to ensure a smooth transition and allow for incremental progress.
 
+## Status
+
+**Current Phase:** Phase 1: Core Functionality
+
+**Completed:**
+*   Project Scaffolding
+*   Model Abstraction
+*   Basic CLI Commands (prompt)
+
+**In Progress:**
+*   OpenAI Integration
+
 ## Phase 1: Core Functionality
 
 The goal of Phase 1 is to replicate the core functionality of the `llm` tool in Go. This includes the ability to run prompts against language models, manage API keys, and log conversations.
 
-*   **1.1: Project Scaffolding**:
+*   **1.1: Project Scaffolding**: **DONE**
     *   Set up a new Go project with a clear directory structure.
     *   Define the initial package layout (e.g., `cmd/llm`, `pkg/llm`, `pkg/provider`).
-    *   Implement a basic CLI using a library like `cobra` or `urfave/cli`.
+    *   Implement a basic CLI using a library like `cobra`.
 
-*   **1.2: Model Abstraction**:
+*   **1.2: Model Abstraction**: **DONE**
     *   Define a set of Go interfaces for interacting with language models (e.g., `Model`, `EmbeddingModel`).
     *   Implement a `Conversation` struct to manage the history of prompts and responses.
     *   Create a `Response` struct to represent the output from a model.
 
-*   **1.3: OpenAI Integration**:
-    *   Implement a Go client for the OpenAI API.
-    *   Create an `openai` package that implements the `Model` interface.
-    *   Support for both streaming and non-streaming responses.
+*   **1.3: OpenAI Integration**: **IN PROGRESS**
+    *   **1.3.1: Implement a Go client for the OpenAI API.**
+        *   Use the official OpenAI Go client library.
+        *   Add the dependency to `go.mod`.
+    *   **1.3.2: Update the `OpenAIModel` to use the client.**
+        *   The `Execute` method should now call the OpenAI API.
+        *   Handle API errors gracefully.
+    *   **1.3.3: Support for streaming and non-streaming responses.**
+        *   Implement a streaming version of the `Execute` method.
+        *   Update the CLI to handle streaming responses.
+    *   **1.3.4: Add tests for the `OpenAIModel`.**
+        *   Write unit tests for the `Execute` method.
+        *   Use a mock HTTP client to avoid making real API calls in tests.
 
 *   **1.4: Key Management**:
     *   Implement a secure way to store and manage API keys, similar to the `llm keys` command.
@@ -30,7 +51,7 @@ The goal of Phase 1 is to replicate the core functionality of the `llm` tool in 
     *   Use a library like `gorm` or `sqlx` for database interactions.
 
 *   **1.6: Basic CLI Commands**:
-    *   Implement the `llm prompt` command for running prompts.
+    *   Implement the `llm prompt` command for running prompts. **DONE**
     *   Implement the `llm chat` command for interactive conversations.
     *   Implement the `llm keys` command for managing API keys.
     *   Implement the `llm logs` command for viewing conversation logs.
